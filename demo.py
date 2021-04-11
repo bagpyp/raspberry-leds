@@ -1,16 +1,12 @@
-from gpiozero import LED
-from time import sleep
+from gpiozero import LEDBoard
+from time import sleep, time
 
+leds = LEDBoard(2,22,25,15)
 
-white = LED(2)
-blue = LED(22)
-red = LED(25)
-green = LED(15)
-
-def dim(led,brightness,period):
+def dim(led, brightness, duration=1, period=.001):
 	assert(abs(brightness<1))
-	assert(brightness*period<1 and brightness*period>0)
-	while True:
+	t = time()
+	while time() < t+duration:
 		try:
 			led.on()
 			sleep(brightness*period)
@@ -18,13 +14,21 @@ def dim(led,brightness,period):
 			sleep(period*(1-brightness))
 		except KeyboardInterrupt:
 			break
+		
 
 if __name__ == '__main__':
 	while True:
-		for led in [white,blue,red,green]:
-			sleep(.05)
-			led.on()
-			sleep(.1)
-			led.off()
-			sleep(.05)
+		try:
+			for led in leds:
+				sleep(.05)
+				led.on()
+				sleep(.1)
+				led.off()
+				sleep(.05)
+		except KeyboardInterrupt:
+			break
+
+	for led in leds:
+		for i in range(1,10):
+			dim(led, i/10, duration=.1)
 
