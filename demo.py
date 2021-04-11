@@ -29,6 +29,8 @@ if __name__ == '__main__':
 			break
 
 	for led in leds:
-		for i in range(1,10):
-			dim(led, i/10, duration=.1)
+		for i in range(1,50):
+			dim(led, i/50, duration=.1, period= -0.002*i + 0.11)
+		for i in range(9,0,-1):
+			dim(led, i/10, duration = .1, period = .001)
 
